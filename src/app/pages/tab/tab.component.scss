@@ -1,0 +1,15 @@
+:host
+{
+    ion-tab-button.icon-tab1{
+        color: grey;
+    }
+    ion-tab-bar.activated 
+    {
+        ion-tab-button{
+            color: #075698;
+        }
+    }
+:root{
+    --ion-tab-bar-color-activated: #075698;
+}
+}

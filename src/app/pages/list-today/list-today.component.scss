@@ -1,0 +1,18 @@
+:host
+{
+    ion-toolbar { 
+        --background: linear-gradient( #09548e, #0e80d8) !important;
+        --min-height:50px;
+        --color: white;
+    }
+    ion-button.btnOK
+    {
+        --background:	#075698;
+        --color: white;
+    }
+    ion-button.btnCancel
+    {
+        --color:	#075698;
+        --background: white;
+    }
+}

@@ -1,0 +1,42 @@
+:host
+{
+  ion-content{
+    --background: url('../../../assets/img/loginimg.png') 0 0/100% 100% no-repeat ;
+  }
+  ion-toolbar {
+    --min-height:80px;
+    --background: url('https://us.123rf.com/450wm/asamask92/asamask921604/asamask92160400081/55517312-stock-vector-white-blue-sky-gradient-background-vector-illustration.jpg?ver=6') ;
+    --background-size: cover;
+  }
+  ion-item.logo{
+      --background : transparent;   
+  }
+  ion-row.logo
+  {
+    padding-top: 20px;
+  }
+  .login-content {
+    --padding-bottom	: 250px;
+  }
+  ion-button.btnFB
+  {
+    --background:#3C5A99;
+    --color: white;
+  }
+  ion-button.btnGG
+  {
+    --background: white;
+    --color: black;
+  }
+  ion-text.txtForget{
+    padding-right: 10px;
+    padding-left: 200px;
+  }
+  .register{
+    bottom: 20px;
+    position : absolute;
+    width: -webkit-fill-available;
+    color: white;
+    text-decoration-line: underline;
+  }
+}
