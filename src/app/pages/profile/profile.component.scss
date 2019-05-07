@@ -1,0 +1,38 @@
+:host
+{
+  ion-label.labelInfo{
+    color: #075698;
+  }
+  ion-toolbar.bg-class {
+    --min-height:140px;
+    --min-height:140px;
+    --background: #09548E; 
+    --background: -moz-linear-gradient(-45deg, #09548E 17%,#7DB9E8 100%); 
+    --background: -webkit-linear-gradient(-45deg, #09548E 17%,#7DB9E8 100%); 
+    --background: linear-gradient(135deg, #09548E 17%,#7DB9E8 100%); 
+  }
+  ion-avatar{
+    margin : auto;
+    text-align: center!important;
+  }
+  ion-textarea{
+    --padding-top : 150px;
+  }
+  ion-card{
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      background-color: white;
+    }
+  ion-button.btn1{
+    --background:	#4d6081;
+    --color: white;
+  }
+  
+  ion-button.btn2{
+    --background:	white;
+    --color: #4d6081;
+  }
+  ion-item.iteTool{
+    --background: transparent;
+  }
+}

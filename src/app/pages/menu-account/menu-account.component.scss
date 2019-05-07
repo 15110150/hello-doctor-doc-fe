@@ -1,0 +1,14 @@
+:host
+{
+    ion-item{
+        --min-height: 60px;
+    }
+    ion-item.accItem{
+        --min-height: 100px;
+        color: #09548e;
+    }
+    ion-avatar.avatar{
+        width: 70px ;  
+        height: 70px;  
+    }
+}

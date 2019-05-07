@@ -9,7 +9,7 @@
     <ion-col size="12">
       <ion-item>
         <ion-icon name="mail" slot="start"></ion-icon>
-        <ion-input placeholder="Tên đăng nhập"></ion-input>
+        <ion-input placeholder="Tên đăng nhập" [(ngModel)]="account.email"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -17,7 +17,7 @@
     <ion-col size="12">
       <ion-item>
         <ion-icon name="lock" slot="start"></ion-icon>
-        <ion-input placeholder="Mật khẩu" type="password"></ion-input>
+        <ion-input placeholder="Mật khẩu" type="password" [(ngModel)]="account.password"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>

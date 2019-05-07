@@ -13,18 +13,18 @@ const routes: Routes = [
         path: 'today',
         loadChildren: '../../pages/list-today/list-today.module#ListTodayComponentModule'
       },
-    //   {
-    //     path: 'search',
-    //     loadChildren: '../../pages/search/search.module#SearchComponentModule'
-    //   },
-    //   {
-    //     path: 'list-booking',
-    //     loadChildren: '../../pages/list-booking/list-booking.module#ListBookingComponentModule'
-    //   },
-    //   {
-    //     path: 'chat',
-    //     loadChildren: '../../pages/search/search.module#SearchComponentModule'
-    //   },
+      {
+        path: 'account',
+        loadChildren: '../../pages/menu-account/menu-account.module#MenuAccountComponentModule'
+      },
+      {
+        path: 'waiting',
+        loadChildren: '../../pages/list-waiting/list-waiting.module#ListWaitingComponentModule'
+      },
+      {
+        path: 'all',
+        loadChildren: '../../pages/list-booking/list-booking.module#ListBookingComponentModule'
+      },
     //   {
     //     path: 'profile',
     //     loadChildren: '../../pages/user-profile/user-profile.module#UserProfileComponentModule'

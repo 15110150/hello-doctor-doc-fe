@@ -1,0 +1,64 @@
+<ion-content>
+  <ion-header no-border>
+    <ion-toolbar class="bg-class">
+      <ion-item lines="none" class="iteTool">
+        <ion-buttons slot="start">
+          <ion-button (click)="btnBack_click()">
+            <ion-icon slot="icon-only" name="arrow-round-back" color="dark"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-row>
+        <ion-col size=4>
+        </ion-col>
+        <ion-col size=4>
+          <ion-card>
+            <img src="{{userProfile.avatarImg}}" style="text-align: center">
+          </ion-card>
+        </ion-col>
+        <ion-col size=4>
+        </ion-col>
+      </ion-row>
+
+      <div text-center style="color: #ffffff"><strong>{{userProfile.name}}</strong></div>
+      <div text-center style="color: #ffffff">Chuyên khoa: {{userProfile.department}}</div>
+      <div text-center>
+        <ion-icon name="star" color="warning"></ion-icon>
+        <ion-icon name="star" color="warning"></ion-icon>
+        <ion-icon name="star" color="warning"></ion-icon>
+        <ion-icon name="star" color="warning"></ion-icon>
+        <ion-icon name="star" color="warning"></ion-icon>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card class="cards-pk">
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Phòng khám</strong></ion-label>
+      <ion-input readonly=true value="{{userProfile.addressTitle}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Giá khám</strong></ion-label>
+      <ion-input readonly=true value="{{userProfile.basePrice}}"></ion-input>
+    </ion-item>
+    <ion-item text-wrap>
+      <ion-label class="labelInfo" position="stacked"><strong>Địa chỉ</strong></ion-label>
+      <ion-input readonly=true value="{{userProfile.address}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Điện thoại</strong></ion-label>
+      <ion-input readonly=true value="{{userProfile.phoneNumber}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Email</strong></ion-label>
+      <ion-input readonly=true value="{{userProfile.phoneNumber}}"></ion-input>
+    </ion-item>
+    <ion-item class="datepicker">
+      <ion-label class="labelInfo" position="stacked"><strong>Ngày sinh</strong></ion-label>
+      <ion-datetime pickerFormat="DD/MM/YYYY" displayFormat="DD/MM/YY" value="10/2/1997"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Giới tính</strong></ion-label>
+      <ion-input readonly=true value="Nam"></ion-input>
+    </ion-item>
+  </ion-card>
+</ion-content>

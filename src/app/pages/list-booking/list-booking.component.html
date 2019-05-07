@@ -1,3 +1,106 @@
-<p>
-  list-booking works!
-</p>
+<ion-toolbar>
+    <ion-segment color="primary" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="waiting" checked>
+        <ion-label>Chưa khám</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="done">
+        <ion-label>Đã khám</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="cancel">
+        <ion-label>Đã hủy</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  
+  <ion-content color="light">
+    <div *ngIf="listBoooking">
+      <ion-list *ngIf="listwaiting">
+        <ion-card *ngFor="let element of listBoooking" class="info">
+          <ion-item>
+            <ion-button slot="end">{{element.status}}</ion-button>
+            <ion-label><strong>{{element.dateTime}}</strong></ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <img src="{{element.patient.avatarImg}}">
+            </ion-thumbnail>
+            <ion-label>
+              <strong class="DTname">{{element.patient.name}}</strong>
+            </ion-label>
+          </ion-item>
+        </ion-card>
+      </ion-list>
+      <ion-list *ngIf="listdone">
+          <ion-card *ngFor="let element of listBoooking" class="info">
+              <ion-item>
+                <ion-button slot="end">{{element.status}}</ion-button>
+                <ion-label><strong>{{element.dateTime}}</strong></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-thumbnail slot="start">
+                  <img src="{{element.patient.avatarImg}}">
+                </ion-thumbnail>
+                <ion-label>
+                  <strong class="DTname">{{element.patient.name}}</strong>
+                </ion-label>
+              </ion-item>
+            </ion-card>
+        </ion-list>
+    </div>
+    <div *ngIf="(isShow && !listBoooking)">
+      <ion-card>
+        <ion-item class="info">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+      <ion-card>
+        <ion-item class="info">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+      <ion-card>
+        <ion-item class="info">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+    </div>
+  </ion-content>
