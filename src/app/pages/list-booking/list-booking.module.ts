@@ -9,7 +9,8 @@ import { ListBookingComponent } from './list-booking.component';
 const routes: Routes = [
   {
     path: '',
-    component: ListBookingComponent
+    component: ListBookingComponent,
+    runGuardsAndResolvers: 'always',
   }
 ];
 

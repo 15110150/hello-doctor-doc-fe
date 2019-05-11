@@ -9,7 +9,8 @@ import { ListTodayComponent } from './list-today.component';
 const routes: Routes = [
   {
     path: '',
-    component: ListTodayComponent
+    component: ListTodayComponent,
+    runGuardsAndResolvers: 'always',
   }
 ];
 

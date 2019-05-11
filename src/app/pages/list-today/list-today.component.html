@@ -23,10 +23,10 @@
         </ion-label>
       </ion-item>
       <ion-card-content>
-        <ion-button size="small" class="btnOK" slot="end">
+        <ion-button size="small" class="btnOK" slot="end" (click)="btnDone_click(result)">
           Đã khám
         </ion-button>
-        <ion-button size="small" class="btnCancel" slot="end">
+        <ion-button size="small" class="btnCancel" slot="end" (click)="btnPatientCancel_click(result)">
           Khách hủy
         </ion-button>
       </ion-card-content>

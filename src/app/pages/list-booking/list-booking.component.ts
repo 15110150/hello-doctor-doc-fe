@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Status } from 'src/app/model/status';
 import { ListBooking } from 'src/app/model/list-booking';
 import { BookingService } from 'src/app/services/booking/booking.service';
+import { Router, NavigationEnd  } from '@angular/router';
 
 @Component({
   selector: 'app-list-booking',
   templateUrl: './list-booking.component.html',
   styleUrls: ['./list-booking.component.scss']
 })
-export class ListBookingComponent implements OnInit {
+export class ListBookingComponent implements OnInit, OnDestroy {
 
   public isShow = false;
   public listwaiting = true;
@@ -16,10 +17,28 @@ export class ListBookingComponent implements OnInit {
   public listcancel = false;
   public status: any;
   public listBoooking: ListBooking[];
+  navigationSubscription;
 
-  constructor(private bookingService: BookingService) { }
+  constructor(private bookingService: BookingService, private router: Router) {
+    //subscribe to the router events
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        //Nếu đó là một sự kiện NavigationEnd refesh lại hàm (hoặc ngOnInit)
+        this.getListBooking(Status.WAITING + ',' + Status.ACCEPTED);
+      }
+    });
+   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    //tránh rò rỉ bộ nhớ ở đây bằng cách dọn dẹp. 
+    //Nếu không thì nó sẽ tiếp tục chạy phương thức getListBooking()
+    // trên mỗi sự kiện navigationEnd.
+    if (this.navigationSubscription) {  
+       this.navigationSubscription.unsubscribe();
+    }
   }
 
   segmentChanged(ev: any) {
