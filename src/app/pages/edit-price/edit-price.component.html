@@ -1,0 +1,77 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-item lines="none" class="iteTool">
+      <ion-buttons slot="start">
+        <ion-button (click)="btnBack_click()">
+          <ion-icon slot="icon-only" name="arrow-round-back" color="dark"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-label color="white" class="center">
+        <strong>
+          Điều chỉnh giá
+        </strong>
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+  <ion-segment color="primary" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="base-price" checked>
+      <ion-label>Giá khám</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="promotion-price">
+      <ion-label>Khuyến mãi</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content color="light">
+  <div *ngIf="isBasePrice">
+    <ion-card>
+      <ion-item lines="none">
+        <ion-label position="stacked"><strong>Giá cũ</strong></ion-label>
+        <ion-input readonly=true>100 VND</ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="stacked"><strong>Giá mới</strong></ion-label>
+        <ion-input color="danger" type="number"></ion-input>
+      </ion-item>
+    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4"></ion-col>
+        <ion-col size="4">
+          <ion-button expand="full" shape="round" class="btnSubmit">
+            Xác nhận
+          </ion-button>
+        </ion-col>
+        <ion-col size="4"></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="isPromotionPrice">
+      <ion-card>
+          <ion-item lines="none">
+            <ion-label position="stacked"><strong>Giá khám</strong></ion-label>
+            <ion-input readonly=true>100.000 VND</ion-input>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label position="stacked"><strong>Giảm giá</strong></ion-label>
+            <ion-input type="number" required="true" min="0" max="100"></ion-input>
+          </ion-item>
+          <ion-item lines="none">
+              <ion-label position="stacked"><strong>Giá cuối cùng</strong></ion-label>
+              <ion-input color="danger" readonly="true"></ion-input>
+            </ion-item>
+        </ion-card>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4"></ion-col>
+            <ion-col size="4">
+              <ion-button expand="full" shape="round" class="btnSubmit">
+                Xác nhận
+              </ion-button>
+            </ion-col>
+            <ion-col size="4"></ion-col>
+          </ion-row>
+        </ion-grid>
+  </div>
+</ion-content>

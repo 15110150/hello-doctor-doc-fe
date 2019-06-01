@@ -1,106 +1,134 @@
 <ion-toolbar>
-    <ion-segment color="primary" (ionChange)="segmentChanged($event)">
-      <ion-segment-button value="waiting" checked>
-        <ion-label>Chưa khám</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="done">
-        <ion-label>Đã khám</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="cancel">
-        <ion-label>Đã hủy</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
-  
-  <ion-content color="light">
-    <div *ngIf="listBoooking">
-      <ion-list *ngIf="listwaiting">
-        <ion-card *ngFor="let element of listBoooking" class="info">
-          <ion-item>
-            <ion-button slot="end">{{element.status}}</ion-button>
-            <ion-label><strong>{{element.dateTime}}</strong></ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-thumbnail slot="start">
-              <img src="{{element.patient.avatarImg}}">
-            </ion-thumbnail>
-            <ion-label>
-              <strong class="DTname">{{element.patient.name}}</strong>
-            </ion-label>
-          </ion-item>
-        </ion-card>
-      </ion-list>
-      <ion-list *ngIf="listdone">
-          <ion-card *ngFor="let element of listBoooking" class="info">
-              <ion-item>
-                <ion-button slot="end">{{element.status}}</ion-button>
-                <ion-label><strong>{{element.dateTime}}</strong></ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-thumbnail slot="start">
-                  <img src="{{element.patient.avatarImg}}">
-                </ion-thumbnail>
-                <ion-label>
-                  <strong class="DTname">{{element.patient.name}}</strong>
-                </ion-label>
-              </ion-item>
-            </ion-card>
-        </ion-list>
+  <ion-segment color="primary" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="waiting" checked>
+      <ion-label>Chưa khám</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="done">
+      <ion-label>Đã khám</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="cancel">
+      <ion-label>Đã hủy</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-item>
+    <ion-label>Từ ngày</ion-label>
+    <ion-datetime display-format="DD/MM/YYYY" [readonly]="!isReadonly" (ionChange)="updateMyDate($event)" [(ngModel)]="startDate" ></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>Đến ngày</ion-label>
+    <ion-datetime display-format="DD/MM/YYYY" [readonly]="isReadonly" [(ngModel)]="endDate"></ion-datetime>
+  </ion-item>
+</ion-toolbar>
+
+<ion-content color="light">
+  <div *ngIf="listBoooking">
+    <div *ngIf="listwaiting">
+      <ion-card *ngFor="let element of listBoooking" class="info">
+        <ion-item>
+          <ion-button fill="outline" slot="end" [color]="(element.status === 'ACCEPTED') ? 'success' : 'primary'" >{{element.status}}</ion-button>
+          <ion-label><strong>{{element.dateTime}}</strong></ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img src="{{element.patient.avatarImg}}">
+          </ion-thumbnail>
+          <ion-label>
+            <strong class="DTname">{{element.patient.name}}</strong>
+            <p>{{element.patient.address}}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-button slot="end" [disabled]="(element.status === 'ACCEPTED')" size="small" color="medium" (click)="btnCancel_click(element)">Hủy</ion-button>
+         </ion-item>
+      </ion-card>
     </div>
-    <div *ngIf="(isShow && !listBoooking)">
-      <ion-card>
-        <ion-item class="info">
-          <ion-thumbnail slot="start">
-            <ion-skeleton-text animated></ion-skeleton-text>
-          </ion-thumbnail>
-          <ion-label>
-            <h3>
-              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            </h3>
-            <p>
-              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-            </p>
-            <p>
-              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-            </p>
-          </ion-label>
+    <div *ngIf="listdone">
+      <ion-card *ngFor="let element of listBoooking" class="info">
+        <ion-item>
+          <ion-button slot="end">{{element.status}}</ion-button>
+          <ion-label><strong>{{element.dateTime}}</strong></ion-label>
         </ion-item>
-      </ion-card>
-      <ion-card>
-        <ion-item class="info">
+        <ion-item>
           <ion-thumbnail slot="start">
-            <ion-skeleton-text animated></ion-skeleton-text>
+            <img src="{{element.patient.avatarImg}}">
           </ion-thumbnail>
           <ion-label>
-            <h3>
-              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            </h3>
-            <p>
-              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-            </p>
-            <p>
-              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-            </p>
-          </ion-label>
-        </ion-item>
-      </ion-card>
-      <ion-card>
-        <ion-item class="info">
-          <ion-thumbnail slot="start">
-            <ion-skeleton-text animated></ion-skeleton-text>
-          </ion-thumbnail>
-          <ion-label>
-            <h3>
-              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            </h3>
-            <p>
-              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-            </p>
-            <p>
-              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-            </p>
+            <strong class="DTname">{{element.patient.name}}</strong>
           </ion-label>
         </ion-item>
       </ion-card>
     </div>
-  </ion-content>
+    <div *ngIf="listcancel">
+      <ion-card *ngFor="let element of listBoooking" class="info">
+        <ion-item>
+          <ion-button color="danger" fill="clear" slot="end">{{element.status}}</ion-button>
+          <ion-label><strong>{{element.dateTime}}</strong></ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img src="{{element.patient.avatarImg}}">
+          </ion-thumbnail>
+          <ion-label>
+            <strong class="DTname">{{element.patient.name}}</strong>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+    </div>
+  </div>
+  <div *ngIf="(isShow && !listBoooking)">
+    <ion-card>
+      <ion-item class="info">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <ion-card>
+      <ion-item class="info">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <ion-card>
+      <ion-item class="info">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+</ion-content>

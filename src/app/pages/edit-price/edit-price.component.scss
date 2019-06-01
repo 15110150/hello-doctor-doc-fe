@@ -1,0 +1,12 @@
+:host
+{
+    ion-label.center { 
+        left: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+    }
+    ion-button.btnSubmit{
+        --background:	#075698;
+        --color: white;
+    }
+}

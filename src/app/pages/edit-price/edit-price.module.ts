@@ -4,13 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-import { ListBookingComponent } from './list-booking.component';
+import { EditPriceComponent } from './edit-price.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ListBookingComponent,
-    runGuardsAndResolvers: 'always',
+    component: EditPriceComponent,
   }
 ];
 
@@ -22,6 +21,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   providers: [DatePipe],
-  declarations: [ListBookingComponent]
+  declarations: [EditPriceComponent]
 })
-export class ListBookingComponentModule {}
+export class EditPriceModule {}
