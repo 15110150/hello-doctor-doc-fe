@@ -20,16 +20,25 @@ export class ListWaitingComponent implements OnInit {
     this.getListWaiting();
   }
 
-  getListWaiting(){
+  getListWaiting() {
     this.bookingService.getListBookingToday(Status.WAITING)
-    .subscribe(result=> {
-      this.listWaiting = result;
-    })
-    this.isShow = false;
-    console.log(this.listWaiting);
+      .subscribe(result => {
+        this.listWaiting = result;
+
+        this.listWaiting.forEach(x => {
+          this.bookingService.getListBookingAtTime(x.dateTime + ":00")
+            .subscribe(result2 => {
+              console.log(result2);
+              x.numberBooking = result2.filter(
+                item => item.status === Status.ACCEPTED
+             ).length
+            }
+            )
+        });
+      })
   }
 
-  btnOK_click(booking: ListBooking){
+  btnOK_click(booking: ListBooking) {
     booking.status = Status.ACCEPTED;
     this.bookingService.updateBooking(booking)
       .subscribe(result => {
@@ -38,7 +47,7 @@ export class ListWaitingComponent implements OnInit {
       });
   }
 
-  btnCancel_click(booking: any){
+  btnCancel_click(booking: any) {
     booking.status = Status.DOCTOR_CANCEL;
     this.bookingService.updateBooking(booking)
       .subscribe(result => {

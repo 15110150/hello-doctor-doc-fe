@@ -63,4 +63,19 @@ export class BookingService {
         return data;
       }));
   }
+
+  getListBookingAtTime(time: any): Observable<ListBooking[]> {
+    let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
+    let header = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + accessToken.token);
+    let url = this.urlBooking;
+    url = url + '/book/list-booked-at-time?dateTime=' + time;
+    return this.http.get<any>(url, {
+      headers: header
+    }).pipe(
+      map(response => {
+        const data = response;
+        return data;
+      }));
+  }
 }

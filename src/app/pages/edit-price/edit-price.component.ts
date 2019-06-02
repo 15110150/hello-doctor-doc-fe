@@ -30,4 +30,10 @@ export class EditPriceComponent implements OnInit {
     }
   }
 
+  checkNumber(discount: any){
+    if(discount<0 || discount>100){
+      
+    }
+  }
+
 }

@@ -1,55 +1,59 @@
 <ion-header no-border>
-    <ion-toolbar>
-      <ion-label color="white" ali="center">
-        <div text-center>
-          <strong>
-            Danh sách đang chờ
-          </strong>
-        </div>
-      </ion-label>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content color="light">
-    <div *ngIf="listWaiting">
-      <ion-card *ngFor="let result of listWaiting">
-        <ion-item lines="none">
-          <ion-avatar slot="start">
-            <img src="{{result.patient.avatarImg}}">
-          </ion-avatar>
-          <ion-label>
-            <strong>{{result.patient.name}}</strong>
-            <p>{{result.dateTime}}</p>
-          </ion-label>
-        </ion-item>
-        <ion-card-content>
-          <ion-button size="small" class="btnOK" slot="end" (click)="btnOK_click(result)">
-            Xác nhận
-          </ion-button>
-          <ion-button size="small" class="btnCancel" slot="end" (click)="btnCancel_click(result)">
-            Hủy
-          </ion-button>
-        </ion-card-content>
-      </ion-card>
-    </div>
-    <div *ngIf="(!listWaiting && isShow)">
-      <ion-card>
-        <ion-item lines="none">
-          <ion-avatar slot="start">
-            <ion-skeleton-text animated></ion-skeleton-text>
-          </ion-avatar>
-          <ion-label>
-            <h3>
-              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            </h3>
-            <p>
-              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-            </p>
-          </ion-label>
-        </ion-item>
-        <ion-card-content>
+  <ion-toolbar>
+    <ion-label color="white" ali="center">
+      <div text-center>
+        <strong>
+          Danh sách đang chờ
+        </strong>
+      </div>
+    </ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <div *ngIf="listWaiting">
+    <ion-card *ngFor="let result of listWaiting">
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="{{result.patient.avatarImg}}">
+        </ion-avatar>
+        <ion-label>
+          <strong>{{result.patient.name}}</strong>
+          <p>{{result.dateTime}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-card-content>
+        <ion-label>Bạn có {{result.numberBooking}} lịch hẹn vào thời gian này. </ion-label>
+        <ion-label class="btnDetail">Chi tiết</ion-label>
+        <br />
+        <br />
+        <ion-button size="small" class="btnOK" slot="end" (click)="btnOK_click(result)">
+          Xác nhận
+        </ion-button>
+        <ion-button size="small" class="btnCancel" slot="end" (click)="btnCancel_click(result)">
+          Hủy
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="(!listWaiting && isShow)">
+    <ion-card>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
             <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-        </ion-card-content>
-      </ion-card>
-    </div>
-  </ion-content>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-card-content>
+        <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

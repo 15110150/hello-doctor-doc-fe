@@ -10,5 +10,6 @@ export class ListBooking {
     patient: Patient;
     status: string;
     statusReason: string;
+    numberBooking: number;
 }
   
