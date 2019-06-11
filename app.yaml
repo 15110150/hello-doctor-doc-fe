@@ -1,0 +1,9 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+handlers:
+- url: /
+  static_files: dist/hello-doctor-DT/index.html
+  upload: dist/hello-doctor-DT/index.html
+- url: /
+  static_dir: dist/hello-doctor-DT

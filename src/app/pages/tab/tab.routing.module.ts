@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 import {TabComponent} from './tab.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
 
@@ -11,7 +12,8 @@ const routes: Routes = [
     children: [
       {
         path: 'today',
-        loadChildren: '../../pages/list-today/list-today.module#ListTodayComponentModule'
+        loadChildren: '../../pages/list-today/list-today.module#ListTodayComponentModule',
+        canActivate: [AuthGuard] 
       },
       {
         path: 'account',

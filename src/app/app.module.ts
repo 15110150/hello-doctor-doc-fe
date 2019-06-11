@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { APP_BASE_HREF } from '@angular/common';
 import { TabComponent } from './pages/tab/tab.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export function tokenGetter() {
   return localStorage.getItem('currentUser');
@@ -26,7 +27,8 @@ export function tokenGetter() {
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: APP_BASE_HREF, useValue: '/' }
+    { provide: APP_BASE_HREF, useValue: '/' },
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

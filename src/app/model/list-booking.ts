@@ -4,6 +4,7 @@ import { Patient } from './patient';
 export class ListBooking {
     commentable: boolean;
     dateTime: string;
+    dateFormat: string;
     doctor: Doctor;
     id: number;
     note: string;

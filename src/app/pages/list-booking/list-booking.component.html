@@ -10,14 +10,27 @@
       <ion-label>Đã hủy</ion-label>
     </ion-segment-button>
   </ion-segment>
-  <ion-item>
-    <ion-label>Từ ngày</ion-label>
-    <ion-datetime display-format="DD/MM/YYYY" [readonly]="!isReadonly" (ionChange)="updateMyDate($event)" [(ngModel)]="startDate" ></ion-datetime>
-  </ion-item>
-  <ion-item>
-    <ion-label>Đến ngày</ion-label>
-    <ion-datetime display-format="DD/MM/YYYY" [readonly]="isReadonly" [(ngModel)]="endDate"></ion-datetime>
-  </ion-item>
+  <ion-row>
+    <ion-col size="5">
+      <ion-item>
+        <ion-label class="label" position="stacked">Từ ngày</ion-label>
+        <ion-datetime display-format="DD/MM/YYYY" [readonly]="!isReadonly" (ionChange)="updateMyDate($event)"
+          [(ngModel)]="startDate"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col size="5">
+      <ion-item>
+        <ion-label class="label" position="stacked">Đến ngày</ion-label>
+        <ion-datetime display-format="DD/MM/YYYY" [readonly]="isReadonly" (ionChange)="updateMyDate($event)"
+        [(ngModel)]="endDate"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col size="2">
+        <ion-item lines="none">
+        <ion-icon class="search" name="search" color="dark" (click)="bnSearch_click()"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row>
 </ion-toolbar>
 
 <ion-content color="light">
@@ -25,7 +38,7 @@
     <div *ngIf="listwaiting">
       <ion-card *ngFor="let element of listBoooking" class="info">
         <ion-item>
-          <ion-button fill="outline" slot="end" [color]="(element.status === 'ACCEPTED') ? 'success' : 'primary'" >{{element.status}}</ion-button>
+          <ion-button fill="outline" slot="end" [color]="(element.status === 'ACCEPTED') ? 'success' : 'primary'">{{element.status}}</ion-button>
           <ion-label><strong>{{element.dateTime}}</strong></ion-label>
         </ion-item>
         <ion-item>
@@ -38,8 +51,8 @@
           </ion-label>
         </ion-item>
         <ion-item>
-            <ion-button slot="end" [disabled]="(element.status === 'ACCEPTED')" size="small" color="medium" (click)="btnCancel_click(element)">Hủy</ion-button>
-         </ion-item>
+          <ion-button slot="end" [disabled]="(element.status === 'ACCEPTED')" size="small" color="medium" (click)="btnCancel_click(element)">Hủy</ion-button>
+        </ion-item>
       </ion-card>
     </div>
     <div *ngIf="listdone">

@@ -3,6 +3,7 @@ import { Status } from 'src/app/model/status';
 import { ListBooking } from 'src/app/model/list-booking';
 import { BookingService } from 'src/app/services/booking/booking.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-list-booking',
@@ -45,12 +46,12 @@ export class ListBookingComponent implements OnInit, OnDestroy {
   isReadonly: boolean;
   //#endregion
 
-  constructor(private bookingService: BookingService, private router: Router) {
+  constructor(private bookingService: BookingService, private router: Router, private datePipe: DatePipe) {
     //subscribe to the router events
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      if (e instanceof NavigationEnd) {
+      if (e instanceof NavigationEnd && this.status != null) {
         //Nếu đó là một sự kiện NavigationEnd refesh lại hàm (hoặc ngOnInit)
-        this.getListBooking(this.status);
+        this.getListBooking(this.startDate, this.endDate, this.status);
       }
     });
   }
@@ -61,7 +62,7 @@ export class ListBookingComponent implements OnInit, OnDestroy {
     if (this.curentSegment === "waiting") {
       this.endDate = this.parseDate(this.startDate, true);
     }
-    else  {
+    else {
       this.startDate = this.parseDate(this.endDate, false);
     }
   }
@@ -89,8 +90,9 @@ export class ListBookingComponent implements OnInit, OnDestroy {
     if (future === true) {
       tempDate.setDate(start.getDate() + 7)
     }
-    else
+    else{
       tempDate.setDate(start.getDate() - 7)
+    }
     return tempDate.toISOString();
   }
 
@@ -132,16 +134,26 @@ export class ListBookingComponent implements OnInit, OnDestroy {
       this.status = Status.DOCTOR_CANCEL + ',' + Status.PATIENT_CANCEL + ',' + Status.EXPIRED;
     }
     this.intDate();
-    this.getListBooking(this.status);
+    this.getListBooking(this.startDate, this.endDate, this.status);
   }
 
-  getListBooking(status: any) {
-    this.bookingService.getListBooking(status)
+  getListBooking(startDate: any, endDate: any, status: any) {
+    var _startDate = new Date(startDate);
+    var tempStartDate = this.datePipe.transform(_startDate, 'dd/MM/yyyy hh:mm:ss');
+
+    var _endDate = new Date(endDate);
+    var tempEndDate = this.datePipe.transform(_endDate, 'dd/MM/yyyy hh:mm:ss');
+
+    this.bookingService.getListBookingAtPeriod(tempStartDate, tempEndDate, status)
       .subscribe(
         result => {
           this.listBoooking = result;
         }
       )
+  }
+
+  bnSearch_click(){
+    this.getListBooking(this.startDate, this.endDate, this.status);
   }
 
 }

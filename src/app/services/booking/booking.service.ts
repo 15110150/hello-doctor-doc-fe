@@ -78,4 +78,19 @@ export class BookingService {
         return data;
       }));
   }
+
+  getListBookingAtPeriod(startTime: string, endTime: string, status: string): Observable<ListBooking[]> {
+    let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
+    let header = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + accessToken.token);
+    let url = this.urlBooking;
+    url = url + '/book/my-list-booking-in-period?endDate=' + endTime + '&startDate=' + startTime + '&status=' + status;
+    return this.http.get<any>(url, {
+      headers: header
+    }).pipe(
+      map(response => {
+        const data = response;
+        return data;
+      }));
+  }
 }

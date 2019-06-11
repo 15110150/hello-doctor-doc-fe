@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://35.240.201.202:8080',
-  apiUrlApi: 'http://35.240.201.202:8080/api'
+  apiUrl: 'https://hellodoctor.tech:8443',
+  apiUrlApi: 'https://hellodoctor.tech:8443/api'
 };
 
 /*

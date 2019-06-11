@@ -19,13 +19,12 @@
         </ion-avatar>
         <ion-label>
           <strong>{{result.patient.name}}</strong>
-          <p>{{result.dateTime}}</p>
+          <p>{{result.dateFormat}}</p>
         </ion-label>
       </ion-item>
       <ion-card-content>
-        <ion-label>Bạn có {{result.numberBooking}} lịch hẹn vào thời gian này. </ion-label>
+        <ion-label>Bạn có <strong>{{result.numberBooking}}</strong> lịch hẹn vào thời gian này. </ion-label>
         <ion-label class="btnDetail">Chi tiết</ion-label>
-        <br />
         <br />
         <ion-button size="small" class="btnOK" slot="end" (click)="btnOK_click(result)">
           Xác nhận

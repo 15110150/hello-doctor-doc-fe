@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-price',
@@ -12,7 +13,7 @@ export class EditPriceComponent implements OnInit {
 
   curentSegment: any;
 
-  constructor() { }
+  constructor(private _location: Location) { }
 
   ngOnInit() {
     
@@ -32,8 +33,11 @@ export class EditPriceComponent implements OnInit {
 
   checkNumber(discount: any){
     if(discount<0 || discount>100){
-      
     }
+  }
+
+  btnBack_click(){
+    this._location.back();
   }
 
 }
