@@ -44,6 +44,14 @@ export class ListBookingComponent implements OnInit, OnDestroy {
   endDate: any;
   //cờ readonly thời gian bắt đầu
   isReadonly: boolean;
+  minStartDate: any;
+  maxStartDate: any;
+
+  minEndDate: any;
+  maxEndDate: any;
+
+  monthValue: Array<number>;
+  yearValue: Array<number>;
   //#endregion
 
   constructor(private bookingService: BookingService, private router: Router, private datePipe: DatePipe) {
@@ -54,6 +62,16 @@ export class ListBookingComponent implements OnInit, OnDestroy {
         this.getListBooking(this.startDate, this.endDate, this.status);
       }
     });
+  }
+
+  initTime() {
+    var today = new Date();
+    console.log(today);
+    this.monthValue = new Array();
+    this.yearValue = new Array();
+    this.monthValue.push(today.getMonth() + 1);
+    this.monthValue.push(today.getMonth() + 2);
+    this.yearValue.push(today.getFullYear());
   }
 
   //hàm cập nhật thời gian lọc
@@ -88,10 +106,10 @@ export class ListBookingComponent implements OnInit, OnDestroy {
     tempDate = new Date();
 
     if (future === true) {
-      tempDate.setDate(start.getDate() + 7)
+      tempDate.setDate(start.getMonth() + 2)
     }
     else{
-      tempDate.setDate(start.getDate() - 7)
+      tempDate.setDate(start.getMonth() - 2)
     }
     return tempDate.toISOString();
   }
@@ -100,10 +118,20 @@ export class ListBookingComponent implements OnInit, OnDestroy {
     if (this.curentSegment === "waiting") {
       this.startDate = new Date().toISOString();
       this.endDate = this.parseDate(this.startDate, true);
+      this.maxStartDate = new Date();
+      this.minStartDate = new Date();
+      this.maxEndDate.setMonth(this.minStartDate.getMonth() + 2) ;
+      this.minStartDate = this.datePipe.transform(this.minStartDate, 'yyyy-MM-dd');
+      this.maxStartDate = this.datePipe.transform(this.maxStartDate, 'yyyy-MM-dd');
     }
     else if (this.curentSegment === "done" || this.curentSegment === "cancel") {
       this.endDate = new Date().toISOString();
       this.startDate = this.parseDate(this.endDate, false);
+      this.minEndDate = new Date();
+      this.maxStartDate = new Date();
+      this.minEndDate.setMonth(this.maxEndDate.getMonth() - 2);
+      this.minEndDate = this.datePipe.transform(this.minStartDate, 'yyyy-MM-dd');
+      this.maxEndDate = this.datePipe.transform(this.maxStartDate, 'yyyy-MM-dd');
     }
   }
 
@@ -121,7 +149,7 @@ export class ListBookingComponent implements OnInit, OnDestroy {
     if (this.curentSegment === "waiting") {
       this.isReadonly = true;
       this.changeStateList(this.listwaiting, this.listdone, this.listcancel);
-      this.status = Status.WAITING + ',' + Status.ACCEPTED;
+      this.status = Status.ACCEPTED;
     }
     else if (this.curentSegment === "done") {
       this.isReadonly = false;

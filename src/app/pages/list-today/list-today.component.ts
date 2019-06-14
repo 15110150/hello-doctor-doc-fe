@@ -3,7 +3,8 @@ import { Status } from 'src/app/model/status';
 import { ListBooking } from 'src/app/model/list-booking';
 import { DatePipe } from '@angular/common';
 import { BookingService } from 'src/app/services/booking/booking.service';
-import { Router, NavigationEnd  } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { FcmService } from 'src/app/services/fcm/fcm.service';
 
 @Component({
   selector: 'app-list-today',
@@ -19,8 +20,8 @@ export class ListTodayComponent implements OnInit, OnDestroy {
   public isShow = true;
   navigationSubscription;
 
-  constructor(private bookingService: BookingService,private datePipe: DatePipe,
-    private router: Router) { 
+  constructor(private bookingService: BookingService, private datePipe: DatePipe,
+    private router: Router, private fcm: FcmService) {
     //subscribe to the router events
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -31,7 +32,7 @@ export class ListTodayComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.strToday =  this.datePipe.transform(this.today, 'dd/MM/yyyy');
+    this.strToday = this.datePipe.transform(this.today, 'dd/MM/yyyy');
     this.getListToday();
   }
 
@@ -39,28 +40,32 @@ export class ListTodayComponent implements OnInit, OnDestroy {
     //tránh rò rỉ bộ nhớ ở đây bằng cách dọn dẹp. 
     //Nếu không thì nó sẽ tiếp tục chạy phương thức getListBooking()
     // trên mỗi sự kiện navigationEnd.
-    if (this.navigationSubscription) {  
-       this.navigationSubscription.unsubscribe();
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
     }
   }
 
-  getListToday(){
+  getListToday() {
     this.bookingService.getListBookingToday(Status.ACCEPTED)
-    .subscribe(result=> {
-      console.log(this.listToday);
-      this.listToday = result.filter(
-        item => item.dateTime.includes(this.strToday)
-     )
-    })
+      .subscribe(result => {
+        console.log(this.listToday);
+        this.listToday = result.filter(
+          item => item.dateTime.includes(this.strToday)
+        )
+      })
     this.isShow = false;
-    
+
   }
 
-  btnDone_click(booking: any){
+  btnDone_click(booking: any) {
     booking.status = Status.FINISHED;
     this.bookingService.updateBooking(booking)
-    .subscribe(result=> {
-      this.getListToday();
-    })
+      .subscribe(result => {
+        this.getListToday();
+      })
+  }
+
+  test() {
+    this.fcm.sendMess("kk");
   }
 }

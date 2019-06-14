@@ -14,14 +14,16 @@
     <ion-col size="5">
       <ion-item>
         <ion-label class="label" position="stacked">Từ ngày</ion-label>
-        <ion-datetime display-format="DD/MM/YYYY" [readonly]="!isReadonly" (ionChange)="updateMyDate($event)"
-          [(ngModel)]="startDate"></ion-datetime>
+        <ion-datetime display-format="DD/MM/YYYY"
+        (ionChange)="updateMyDate($event)" min="{{minStartDate}}" max="{{maxStartDate}}"
+         [(ngModel)]="startDate"></ion-datetime>
       </ion-item>
     </ion-col>
     <ion-col size="5">
       <ion-item>
         <ion-label class="label" position="stacked">Đến ngày</ion-label>
-        <ion-datetime display-format="DD/MM/YYYY" [readonly]="isReadonly" (ionChange)="updateMyDate($event)"
+        <ion-datetime display-format="DD/MM/YYYY"
+        (ionChange)="updateMyDate($event)" min="{{minEndDate}}" max="{{maxEndDate}}"
         [(ngModel)]="endDate"></ion-datetime>
       </ion-item>
     </ion-col>
