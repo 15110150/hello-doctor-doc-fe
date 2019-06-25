@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
-import { PatientProfileComponent } from './patient-profile.component';
+import { MailBoxComponent } from './mail-box.component';
 
 const routes: Routes = [
   {
-    path: 'patient/:id',
-    component: PatientProfileComponent
+    path: '',
+    component: MailBoxComponent
   }
 ];
 
@@ -20,6 +19,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PatientProfileComponent]
+  declarations: [MailBoxComponent]
 })
-export class PatientProfileModule {}
+export class MailBoxModule {}

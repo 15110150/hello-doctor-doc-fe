@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Account } from 'src/app/model/account';
+import { FcmService } from 'src/app/services/fcm/fcm.service';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -13,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   account: Account;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService,
+    private fcmService: FcmService, public alertController: AlertController) {
 
   }
 
@@ -31,14 +34,35 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         if (data != null) {
           this.router.navigateByUrl('/main/today');
+          this.fcmService.getPermission().subscribe(
+            next => this.fcmService.request_permission_for_notifications()
+          );
         }
       },
         error => {
           if (error.status = 404) {
-            alert('Tài khoản không tồn tại');
+            this.notExistAlert();
           }
           else
-            alert('Tên đăng nhập hoặc mật khẩu không đúng');
+            this.incorrectAlert();
         });
+  }
+
+  async notExistAlert() {
+    const alert = await this.alertController.create({
+      header: 'Đăng nhập không thành công',
+      message: 'Tài khoản không tồn tại. Xin quí khách kiểm tra lại thông tin',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async incorrectAlert() {
+    const alert = await this.alertController.create({
+      header: 'Đăng nhập không thành công',
+      message: 'Tên đăng nhập hoặc mật khẩu không đúng. Xin quí khách kiểm tra lại thông tin',
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

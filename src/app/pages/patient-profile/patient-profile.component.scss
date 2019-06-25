@@ -3,13 +3,18 @@
   ion-label.labelInfo{
     color: #09548E;
   }
-  ion-toolbar.bg-class {
+  ion-toolbar {
     --min-height:140px;
     --background: #09548E; 
     --background: -moz-linear-gradient(-45deg, #09548E 17%,#7DB9E8 100%); 
     --background: -webkit-linear-gradient(-45deg, #09548E 17%,#7DB9E8 100%); 
     --background: linear-gradient(135deg, #09548E 17%,#7DB9E8 100%); 
   }
+  ion-item{
+  --background : transparent;
+  --padding-top:5px;
+  }
+
   ion-avatar{
     margin : auto;
     text-align: center!important;
@@ -23,15 +28,22 @@
       background-color: white;
     }
   ion-button.btn1{
-    --background:	#4d6081;
+    --background:	#09548E;
     --color: white;
   }
-  
+  ion-button.btnImg{
+    --background:	#989aa2;
+    --color: white;
+  }
   ion-button.btn2{
     --background:	white;
-    --color: #4d6081;
+    --color: #09548E;
   }
   ion-item.iteTool{
     --background: transparent;
+  }
+  ion-avatar.ava{
+    width: 70px ;  
+    height: 70px;  
   }
 }

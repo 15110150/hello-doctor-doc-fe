@@ -5,6 +5,9 @@ import { DatePipe } from '@angular/common';
 import { BookingService } from 'src/app/services/booking/booking.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { FcmService } from 'src/app/services/fcm/fcm.service';
+import { MapingModelService } from 'src/app/services/maping-model/maping-model.service';
+import { Booking } from 'src/app/model/booking';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list-today',
@@ -21,7 +24,8 @@ export class ListTodayComponent implements OnInit, OnDestroy {
   navigationSubscription;
 
   constructor(private bookingService: BookingService, private datePipe: DatePipe,
-    private router: Router, private fcm: FcmService) {
+    private router: Router, private fcm: FcmService, private mapping: MapingModelService,
+    private alertController: AlertController) {
     //subscribe to the router events
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -59,13 +63,46 @@ export class ListTodayComponent implements OnInit, OnDestroy {
 
   btnDone_click(booking: any) {
     booking.status = Status.FINISHED;
-    this.bookingService.updateBooking(booking)
+    var bookingDTO = new Booking();
+    this.mapping.mapingBooking(bookingDTO, booking)
+    this.bookingService.updateBooking(bookingDTO)
       .subscribe(result => {
+        if(result!=null){
         this.getListToday();
+        }
+      }, 
+      error=>{
+        this.errorBookingAlert();
       })
   }
 
-  test() {
-    this.fcm.sendMess("kk");
+  btnDetailBooking_click(id: any){
+    this.router.navigate(['/detail-booking/detail-booking', id]);
   }
+
+  btnPatientCancel_click(booking: any){
+    booking.status = Status.PATIENT_CANCEL;
+    booking.statusReason = "Khách không đến khám";
+    var bookingDTO = new Booking();
+    this.mapping.mapingBooking(bookingDTO, booking)
+    this.bookingService.updateBooking(bookingDTO)
+      .subscribe(result => {
+        if(result!=null){
+        this.getListToday();
+        }
+      }, 
+      error=>{
+        this.errorBookingAlert();
+      })
+  }
+
+  async errorBookingAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cập nhật thất bại',
+      message: 'Cập nhật trạng thái lịch khám thất bại, vui lòng liên hệ ban quản trị viên. Xin cảm ơn!',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 }

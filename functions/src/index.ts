@@ -50,7 +50,7 @@ export const sendOnFirestoreCreate = functions.firestore
                     ]
                 }
             },
-            topic: 'discounts'
+            topic: 'booking'
         };
 
         return admin.messaging().send(payload);
@@ -81,7 +81,7 @@ export const sendMassage = functions.https.onCall(
                     ]
                 }
             },
-            topic: 'discounts'
+            topic: 'booking'
         };
 
         return admin.messaging().send(payload);

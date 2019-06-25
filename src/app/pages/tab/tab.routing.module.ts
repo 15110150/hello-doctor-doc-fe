@@ -27,10 +27,10 @@ const routes: Routes = [
         path: 'all',
         loadChildren: '../../pages/list-booking/list-booking.module#ListBookingComponentModule'
       },
-    //   {
-    //     path: 'profile',
-    //     loadChildren: '../../pages/user-profile/user-profile.module#UserProfileComponentModule'
-    //   },
+      {
+        path: 'mail-box',
+        loadChildren: '../../pages/mail-box/mail-box.module#MailBoxModule'
+      },
     //   {
     //     path: '',
     //     pathMatch: 'full',

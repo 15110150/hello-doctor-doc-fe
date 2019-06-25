@@ -1,0 +1,12 @@
+ion-label.center { 
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+}
+ion-toolbar{
+    --background : white;
+    --color: black;
+}
+ion-icon.icon{
+    color: #09548E;
+}

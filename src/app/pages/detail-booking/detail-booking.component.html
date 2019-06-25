@@ -1,0 +1,102 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-item lines="none" class="itemTool">
+      <ion-buttons slot="start">
+        <ion-button (click)="btnBack_click()">
+          <ion-icon slot="icon-only" name="arrow-round-back" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-label color="white" class="center">
+        <strong>
+          {{booking.dateTime}}
+        </strong>
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+  <ion-item class="itemCode">
+    <ion-label color="light">Mã khám bệnh</ion-label>
+    <ion-input class="text-right-code" [(ngModel)]="booking.code" readonly></ion-input>
+  </ion-item>
+</ion-header>
+<ion-content>
+  <ion-row>
+    <ion-col size="4">
+    </ion-col>
+    <ion-col size="4">
+      <ion-card>
+        <img src="{{booking.patient.avatarImg}}" style="text-align: center">
+      </ion-card>
+    </ion-col>
+    <ion-col size="4">
+    </ion-col>
+  </ion-row>
+  <div text-center><strong>{{booking.patient.name}}</strong></div>
+  <div text-center>
+    <ion-button class="btn1" size="small" (click)="btnPatientDetail_click(booking.patient.userId)">
+      Hồ sơ
+    </ion-button>
+  </div>
+
+  <!-- <div text-center>
+    <ion-button class="btn1" size="small" (click)="btnDoctorDetail_click(booking.doctor.userId)">
+      Hồ sơ
+    </ion-button>
+    <ion-button class="btn1" size="small" (click)="btnDoctorDetail_click(booking.doctor.userId)">
+      Bản đồ
+    </ion-button>
+  </div> -->
+  <br />
+  <ion-item>
+    <ion-label>Ngày khám</ion-label>
+    <ion-input class="text-right" [(ngModel)]="booking.dateTime" readonly></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Tình trạng</ion-label>
+    <ion-input class="text-right" [(ngModel)]="booking.statusVI" readonly></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Giá khám (VND)</ion-label>
+    <ion-input class="text-right" type="number" [(ngModel)]="booking.doctor.basePrice" readonly></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label><strong>Tổng cộng</strong></ion-label>
+    <ion-input class="text-right" type="number" [(ngModel)]="booking.doctor.basePrice" readonly></ion-input>
+  </ion-item>
+  <br />
+  <br />
+  <div *ngIf="(booking.status === 'FINISHED' && booking.commentable === false)">
+    <div text-center>
+      <ion-label class="lbStatus" color="medium"><strong>Bạn được đánh giá</strong></ion-label>
+    </div>
+    <div text-center>
+      <ion-icon class="star" [ngStyle]="{'color': (feedback.rate >= 1)? '#ffce00' : 'grey'}" name="star"></ion-icon>
+      <ion-icon class="star" [ngStyle]="{'color': (feedback.rate >= 2)? '#ffce00' : 'grey'}" name="star"></ion-icon>
+      <ion-icon class="star" [ngStyle]="{'color': (feedback.rate >= 3)? '#ffce00' : 'grey'}" name="star"></ion-icon>
+      <ion-icon class="star" [ngStyle]="{'color': (feedback.rate >= 4)? '#ffce00' : 'grey'}" name="star"></ion-icon>
+      <ion-icon class="star" [ngStyle]="{'color': (feedback.rate >= 5)? '#ffce00' : 'grey'}" name="star"></ion-icon>
+    </div>
+  </div>
+  <div *ngIf="(booking.status === 'FINISHED' && booking.commentable === true)">
+    <div text-center>
+      <ion-label class="lbStatus" color="medium"><strong>Bạn đã khám bệnh</strong></ion-label>
+    </div>
+  </div>
+  <div *ngIf="(booking.status === 'ACCEPTED')">
+    <div text-center>
+      <ion-icon name="checkmark" color="success" class="iconSub"></ion-icon>
+      <ion-label class="lbStatus" color="medium"><strong>Lịch khám đã được xác nhận</strong></ion-label>
+    </div>
+  </div>
+  <div *ngIf="(booking.status === 'WAITING')">
+    <div text-center>
+      <ion-icon name="refresh" color="primary" class="iconSub"></ion-icon>
+      <ion-label class="lbStatus" color="medium"><strong>Lịch khám đang chờ xác nhận</strong></ion-label>
+    </div>
+  </div>
+  <div *ngIf="(booking.status === 'EXPIRED' || booking.status === 'PATIENT_CANCEL' || booking.status === 'DOCTOR_CANCEL')">
+    <div text-center>
+      <ion-icon name="warning" color="warning" class="iconSub"></ion-icon><br />
+      <ion-label class="lbStatus" color="medium"><strong>Lịch khám đã được hủy</strong></ion-label>
+    </div>
+  </div>
+</ion-content>

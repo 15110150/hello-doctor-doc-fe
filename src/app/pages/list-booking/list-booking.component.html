@@ -1,5 +1,5 @@
 <ion-toolbar>
-  <ion-segment color="primary" (ionChange)="segmentChanged($event)">
+  <ion-segment class="segment" (ionChange)="segmentChanged($event)">
     <ion-segment-button value="waiting" checked>
       <ion-label>Chưa khám</ion-label>
     </ion-segment-button>
@@ -15,7 +15,7 @@
       <ion-item>
         <ion-label class="label" position="stacked">Từ ngày</ion-label>
         <ion-datetime display-format="DD/MM/YYYY"
-        (ionChange)="updateMyDate($event)" min="{{minStartDate}}" max="{{maxStartDate}}"
+        (ionChange)="updateMyDate($event)" [min]="minStartDate" [max]="maxStartDate"
          [(ngModel)]="startDate"></ion-datetime>
       </ion-item>
     </ion-col>
@@ -23,7 +23,7 @@
       <ion-item>
         <ion-label class="label" position="stacked">Đến ngày</ion-label>
         <ion-datetime display-format="DD/MM/YYYY"
-        (ionChange)="updateMyDate($event)" min="{{minEndDate}}" max="{{maxEndDate}}"
+        [min]="minEndDate" [max]="maxEndDate"
         [(ngModel)]="endDate"></ion-datetime>
       </ion-item>
     </ion-col>
@@ -40,10 +40,10 @@
     <div *ngIf="listwaiting">
       <ion-card *ngFor="let element of listBoooking" class="info">
         <ion-item>
-          <ion-button fill="outline" slot="end" [color]="(element.status === 'ACCEPTED') ? 'success' : 'primary'">{{element.status}}</ion-button>
-          <ion-label><strong>{{element.dateTime}}</strong></ion-label>
+          <ion-button fill="outline" slot="end" [color]="(element.status === 'ACCEPTED') ? 'success' : 'primary'">{{element.statusVI}}</ion-button>
+          <ion-label><strong>{{element.dateFormat}}</strong></ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item (click)="btnDetailBooking_click(element.id)">
           <ion-thumbnail slot="start">
             <img src="{{element.patient.avatarImg}}">
           </ion-thumbnail>
@@ -60,10 +60,10 @@
     <div *ngIf="listdone">
       <ion-card *ngFor="let element of listBoooking" class="info">
         <ion-item>
-          <ion-button slot="end">{{element.status}}</ion-button>
-          <ion-label><strong>{{element.dateTime}}</strong></ion-label>
+          <ion-button class="btnDone" slot="end">{{element.statusVI}}</ion-button>
+          <ion-label><strong>{{element.dateFormat}}</strong></ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item (click)="btnDetailBooking_click(element.id)">
           <ion-thumbnail slot="start">
             <img src="{{element.patient.avatarImg}}">
           </ion-thumbnail>
@@ -76,10 +76,10 @@
     <div *ngIf="listcancel">
       <ion-card *ngFor="let element of listBoooking" class="info">
         <ion-item>
-          <ion-button color="danger" fill="clear" slot="end">{{element.status}}</ion-button>
-          <ion-label><strong>{{element.dateTime}}</strong></ion-label>
+          <ion-button color="danger" fill="clear" slot="end">{{element.statusVI}}</ion-button>
+          <ion-label><strong>{{element.dateFormat}}</strong></ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item (click)="btnDetailBooking_click(element.id)">
           <ion-thumbnail slot="start">
             <img src="{{element.patient.avatarImg}}">
           </ion-thumbnail>

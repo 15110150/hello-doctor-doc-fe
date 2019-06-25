@@ -2,85 +2,107 @@ import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { ToastController } from '@ionic/angular';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 // Import firebase to fix temporary bug in AngularFire
-import * as app from 'firebase';
+import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs'
+import { environment } from 'src/environments/environment.prod';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FcmService {
-  token;
-  currentMessage = new BehaviorSubject(null);
 
+  private url = `${environment.apiUrlApi}/push`;
+  token;
+  private messaging;
 
   constructor(
     private afMessaging: AngularFireMessaging,
     private fun: AngularFireFunctions,
-    private toastController: ToastController
+    private toastController: ToastController, private http: HttpClient
   ) {
+    this.messaging = firebase.messaging();
 
     // Bind methods to fix temporary bug in AngularFire
     try {
-      const _messaging = app.messaging();
+      const _messaging = firebase.messaging();
       _messaging.onTokenRefresh = _messaging.onTokenRefresh.bind(_messaging);
       _messaging.onMessage = _messaging.onMessage.bind(_messaging);
     } catch (e) { }
-
-
-    /// METHODS GO HERE ///
-  }
-  async makeToast(message) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 5000,
-      position: 'top',
-      showCloseButton: true,
-      closeButtonText: 'dismiss'
-    });
-    toast.present();
   }
 
   getPermission(): Observable<any> {
     return this.afMessaging.requestToken.pipe(
-      tap(token => (this.token = token))
-    ) 
+      tap(
+        token => (
+          localStorage.setItem('tokenSub', token)
+        ),
+      )
+    )
   }
 
-  showMessages(): Observable<any> {
-    return this.afMessaging.messages.pipe(
-      tap(msg => {
-        const body: any = (msg as any).notification.body;
-        this.makeToast(body);
-      })
-    );
+  request_permission_for_notifications() {
+    if (Notification.permission !== "granted") {
+      this.messaging.requestPermission().then(() => {
+        return firebase.messaging().getToken();
+      }).then(token => {
+        let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
+        let urlSub = this.url + '/subscribe'
+        const headers = new HttpHeaders()
+          .set('Authorization', 'Bearer ' + accessToken.token);
+        return this.http.post(urlSub, token, {
+          headers: headers
+        }).pipe(
+          map(response => {
+            const data = response;
+            localStorage.setItem('currentDevice', token);
+            console.log(localStorage.getItem('currentDevice'))
+            return data;
+          })).toPromise();
+      }
+      )
+    }
+    else{
+      return firebase.messaging().getToken().then(
+      token => {
+        let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
+        let urlSub = this.url + '/subscribe'
+        const headers = new HttpHeaders()
+          .set('Authorization', 'Bearer ' + accessToken.token);
+        return this.http.post(urlSub, token, {
+          headers: headers
+        }).pipe(
+          map(response => {
+            const data = response;
+            localStorage.setItem('currentDevice', token);
+            console.log(localStorage.getItem('currentDevice'))
+            return data;
+          })).toPromise();
+      }
+      )
+    }
   }
-  sub(topic) {
-    this.fun
-      .httpsCallable('subscribeToTopic')({ topic, token: this.token })
-      .pipe(tap(_ => this.makeToast(`subscribed to ${topic}`)))
-      .subscribe();
-  }
-  
-  unsub(topic) {
-    this.fun
-      .httpsCallable('unsubscribeFromTopic')({ topic, token: this.token })
-      .pipe(tap(_ => this.makeToast(`unsubscribed from ${topic}`)))
-      .subscribe();
-  }
-  sendMess(topic) {
-    this.fun
-      .httpsCallable('sendMassage')({ topic, token: this.token })
-      .subscribe();
-  }
-  receiveMessage() {
-    this.afMessaging.messages.subscribe(
-      (payload) => {
-        console.log("new message received. ", payload);
-        this.currentMessage.next(payload);
-      })
+
+  logout() {
+    let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
+    let token = localStorage.getItem('currentDevice');
+    console.log(accessToken);
+    let urlUnSub = this.url + '/unsubscribe';
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + accessToken.token);
+    return this.http.post(urlUnSub, token, {
+      headers: headers
+    }).pipe(
+      map(response => {
+        const data = response;
+        localStorage.removeItem('currentDevice');
+        localStorage.removeItem('currentDoctor');
+        return data;
+      })).toPromise();
   }
 }

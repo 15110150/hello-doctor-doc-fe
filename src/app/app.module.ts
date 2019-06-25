@@ -14,6 +14,7 @@ import { AngularFireModule } from '@angular/fire'
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import * as firebase from 'firebase';
 
 export const fireBaseConfig = {
   apiKey: "AIzaSyDldhs5JYFQgNxi5CesHRIpDDi9Qc78n68",
@@ -24,21 +25,23 @@ export const fireBaseConfig = {
   messagingSenderId: "496484448815",
   appId: "1:496484448815:web:369097d2fd4d8d1e"
 }
+firebase.initializeApp(fireBaseConfig);
 
 export function tokenGetter() {
   return localStorage.getItem('currentUser');
 }
 
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
+    AngularFireModule.initializeApp(fireBaseConfig), 
     IonicModule.forRoot(),
     AppRoutingModule, 
-    AngularFireModule.initializeApp(fireBaseConfig), 
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
@@ -51,4 +54,6 @@ export function tokenGetter() {
   ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }

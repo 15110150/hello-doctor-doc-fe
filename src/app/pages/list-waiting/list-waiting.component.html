@@ -13,7 +13,7 @@
 <ion-content color="light">
   <div *ngIf="listWaiting">
     <ion-card *ngFor="let result of listWaiting">
-      <ion-item lines="none">
+      <ion-item lines="none" (click)="btnDetailBooking_click(result.id)">
         <ion-avatar slot="start">
           <img src="{{result.patient.avatarImg}}">
         </ion-avatar>

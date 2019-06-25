@@ -1,3 +1,52 @@
-<p>
-  patient-profile works!
-</p>
+<ion-content>
+  <ion-header no-border>
+    <ion-toolbar>
+      <ion-item lines="none" class="iteTool">
+        <ion-buttons slot="start">
+          <ion-button (click)="btnBack_click()">
+            <ion-icon slot="icon-only" name="arrow-round-back" color="dark"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-row>
+        <ion-col size=4>
+        </ion-col>
+        <ion-col size=4>
+          <ion-avatar class="ava">
+            <img src="{{patient.avatarImg}}" style="text-align: center">
+          </ion-avatar>
+        </ion-col>
+        <ion-col size=4>
+        </ion-col>
+      </ion-row>
+      <div text-center style="color: #ffffff"><strong>{{patient.name}}</strong></div>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card class="cards-pk">
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Họ tên</strong></ion-label>
+      <ion-input readonly [(ngModel)]="patient.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Điện thoại</strong></ion-label>
+      <ion-input readonly [(ngModel)]="patient.phoneNumber"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>CMND</strong></ion-label>
+      <ion-input readonly [(ngModel)]="patient.personIdNumber"></ion-input>
+    </ion-item>
+    <ion-item class="datepicker">
+      <ion-label class="labelInfo" position="stacked"><strong>Ngày sinh</strong></ion-label>
+      <ion-datetime readonly pickerFormat="DD/MM/YYYY" displayFormat="DD/MM/YY" [(ngModel)]="patient.dateOfBirth"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Giới tính</strong></ion-label>
+      <ion-input readonly *ngIf="patient.gender==='FEMALE'">Nam</ion-input>
+      <ion-input readonly *ngIf="patient.gender==='MALE'">Nữ</ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label class="labelInfo" position="stacked"><strong>Cân nặng</strong></ion-label>
+      <ion-input readonly [(ngModel)]="patient.weight"></ion-input>
+    </ion-item>
+  </ion-card>
+</ion-content>

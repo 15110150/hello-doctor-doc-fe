@@ -7,9 +7,11 @@ export class ListBooking {
     dateFormat: string;
     doctor: Doctor;
     id: number;
+    code: string;
     note: string;
     patient: Patient;
     status: string;
+    statusVI: string;
     statusReason: string;
     numberBooking: number;
 }

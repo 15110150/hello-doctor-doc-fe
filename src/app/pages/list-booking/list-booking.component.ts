@@ -4,6 +4,7 @@ import { ListBooking } from 'src/app/model/list-booking';
 import { BookingService } from 'src/app/services/booking/booking.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { StatusVI } from 'src/app/model/statusVI';
 
 @Component({
   selector: 'app-list-booking',
@@ -42,14 +43,14 @@ export class ListBookingComponent implements OnInit, OnDestroy {
   startDate = new Date().toISOString();
   //thời gian kết thúc
   endDate: any;
-  //cờ readonly thời gian bắt đầu
-  isReadonly: boolean;
+
+  //giá trị lớn nhất/ nhỏ nhất của datetime Picker lọc thời gian bắt đầu
   minStartDate: any;
   maxStartDate: any;
-
+  //giá trị lớn nhất/ nhỏ nhất của datetime Picker lọc thời gian kết thúc
   minEndDate: any;
   maxEndDate: any;
-
+  //mảng lưu tháng/năm
   monthValue: Array<number>;
   yearValue: Array<number>;
   //#endregion
@@ -66,27 +67,77 @@ export class ListBookingComponent implements OnInit, OnDestroy {
 
   initTime() {
     var today = new Date();
-    console.log(today);
     this.monthValue = new Array();
     this.yearValue = new Array();
+    //Gồm tháng này và tháng sau
     this.monthValue.push(today.getMonth() + 1);
     this.monthValue.push(today.getMonth() + 2);
+    //Gồm năm nay
     this.yearValue.push(today.getFullYear());
   }
 
-  //hàm cập nhật thời gian lọc
+  //hàm cập nhật thời gian khi có sự kiện thay đổi thời gian chọn
   updateMyDate($event: any) {
     //this.endDate = this.parseDate(this.startDate);
     if (this.curentSegment === "waiting") {
-      this.endDate = this.parseDate(this.startDate, true);
+      this.minEndDate = new Date();
+
+      var starDateTemp = new Date(this.startDate);
+      this.minEndDate = starDateTemp;
+
+      var temp = new Date(this.maxStartDate);
+      temp.setDate(temp.getDate() - 7);
+      if(starDateTemp > temp){
+        this.endDate = starDateTemp.toISOString();
+      }
+      else{
+        this.endDate = this.parseDate(this.startDate, true);
+      }
+      this.minEndDate = this.datePipe.transform(this.minEndDate, 'yyyy-MM-dd');
+
     }
     else {
-      this.startDate = this.parseDate(this.endDate, false);
+      this.minEndDate = new Date();
+      this.maxEndDate = new Date();
+
+      var starDateTemp = new Date(this.startDate);
+      this.minEndDate = starDateTemp;
+      
+      this.maxEndDate.setMonth(this.minEndDate.getMonth()+1);
+
+       if(starDateTemp > temp){
+        this.endDate = starDateTemp.toISOString();
+      }
+      else
+      {
+        this.endDate = this.parseDate(this.startDate, true);
+      }
+      this.minEndDate = this.datePipe.transform(this.minEndDate, 'yyyy-MM-dd');
+      this.maxEndDate = this.datePipe.transform(this.maxEndDate, 'yyyy-MM-dd');
+
+      
     }
   }
 
   ngOnInit() {
-    
+  }
+
+  getDay(date: string) {
+    var weekday = new Array(7);
+    weekday[0] = "CN";
+    weekday[1] = "Thứ 2";
+    weekday[2] = "Thứ 3";
+    weekday[3] = "Thứ 4";
+    weekday[4] = "Thứ 5";
+    weekday[5] = "Thứ 6";
+    weekday[6] = "Thứ 7";
+
+    //date format là dd/mm/YYYY HH:mm nên cắt lấy dd/mm/YYYY phần đầu trước dấu cách
+    var dateString = date.substr(0, date.indexOf(' '));
+    var dateParts = dateString.split("/");
+
+    var dateObject: Date = new Date(+dateParts[2], +dateParts[1] - 1, +dateParts[0]);
+    return weekday[dateObject.getDay()] + ", " + date;
   }
 
   ngOnDestroy() {
@@ -102,36 +153,52 @@ export class ListBookingComponent implements OnInit, OnDestroy {
   parseDate(date1: any, future: boolean) {
     var start = new Date(date1);
 
-    var tempDate: any;
-    tempDate = new Date();
-
     if (future === true) {
-      tempDate.setDate(start.getMonth() + 2)
+      start.setDate(start.getDate() + 7)
     }
     else{
-      tempDate.setDate(start.getMonth() - 2)
+      start.setDate(start.getDate() - 7)
     }
-    return tempDate.toISOString();
+    return start.toISOString();
   }
 
   intDate() {
     if (this.curentSegment === "waiting") {
       this.startDate = new Date().toISOString();
       this.endDate = this.parseDate(this.startDate, true);
+
       this.maxStartDate = new Date();
-      this.minStartDate = new Date();
-      this.maxEndDate.setMonth(this.minStartDate.getMonth() + 2) ;
+      this.minStartDate = new Date(); 
+      this.maxEndDate = new Date();
+      this.minEndDate = new Date();
+
+      this.maxStartDate.setMonth(this.minStartDate.getMonth() + 2);
+      this.minEndDate.setDate(this.minStartDate.getDate());
+      this.maxEndDate.setMonth(this.minStartDate.getMonth() + 2);
+
       this.minStartDate = this.datePipe.transform(this.minStartDate, 'yyyy-MM-dd');
       this.maxStartDate = this.datePipe.transform(this.maxStartDate, 'yyyy-MM-dd');
+      this.minEndDate = this.datePipe.transform(this.minEndDate, 'yyyy-MM-dd');
+      this.maxEndDate = this.datePipe.transform(this.maxEndDate, 'yyyy-MM-dd');
+     
     }
     else if (this.curentSegment === "done" || this.curentSegment === "cancel") {
       this.endDate = new Date().toISOString();
       this.startDate = this.parseDate(this.endDate, false);
-      this.minEndDate = new Date();
+
       this.maxStartDate = new Date();
-      this.minEndDate.setMonth(this.maxEndDate.getMonth() - 2);
-      this.minEndDate = this.datePipe.transform(this.minStartDate, 'yyyy-MM-dd');
-      this.maxEndDate = this.datePipe.transform(this.maxStartDate, 'yyyy-MM-dd');
+      this.minStartDate = new Date('2018-01-01'); //
+      this.maxEndDate = new Date();
+      this.minEndDate = new Date();
+
+      this.minEndDate.setDate(this.minStartDate.getDate());
+      this.maxEndDate.setMonth(this.minEndDate.getMonth() + 1);
+
+      this.minStartDate = this.datePipe.transform(this.minStartDate, 'yyyy-MM-dd');
+      this.maxStartDate = this.datePipe.transform(this.maxStartDate, 'yyyy-MM-dd');
+      this.minEndDate = this.datePipe.transform(this.minEndDate, 'yyyy-MM-dd');
+      this.maxEndDate = this.datePipe.transform(this.maxEndDate, 'yyyy-MM-dd');
+     
     }
   }
 
@@ -147,18 +214,15 @@ export class ListBookingComponent implements OnInit, OnDestroy {
     this.listBoooking = null;
     this.curentSegment = ev.detail.value;
     if (this.curentSegment === "waiting") {
-      this.isReadonly = true;
-      this.changeStateList(this.listwaiting, this.listdone, this.listcancel);
+      this.listwaiting = true; this.listdone = false; this.listcancel = false;
       this.status = Status.ACCEPTED;
     }
     else if (this.curentSegment === "done") {
-      this.isReadonly = false;
-      this.changeStateList(this.listdone, this.listwaiting, this.listcancel);
+      this.listwaiting = false; this.listdone = true; this.listcancel = false;
       this.status = Status.FINISHED;
     }
     else if (this.curentSegment === "cancel") {
-      this.isReadonly = false;
-      this.changeStateList(this.listcancel, this.listwaiting, this.listdone);
+      this.listwaiting = false; this.listdone = false; this.listcancel = true;
       this.status = Status.DOCTOR_CANCEL + ',' + Status.PATIENT_CANCEL + ',' + Status.EXPIRED;
     }
     this.intDate();
@@ -176,8 +240,36 @@ export class ListBookingComponent implements OnInit, OnDestroy {
       .subscribe(
         result => {
           this.listBoooking = result;
+          this.listBoooking.forEach(x=>{
+            x.dateFormat = this.getDay(x.dateTime);
+            if(x.status === Status.ACCEPTED){
+              x.statusVI = StatusVI.ACCEPTED;
+            }
+            else if(x.status === Status.DOCTOR_CANCEL){
+              x.statusVI = StatusVI.DOCTOR_CANCEL;
+            }
+            else if(x.status === Status.DOCTOR_CANCEL){
+              x.statusVI = StatusVI.DOCTOR_CANCEL;
+            }
+            else if(x.status === Status.EXPIRED){
+              x.statusVI = StatusVI.EXPIRED;
+            }
+            else if(x.status === Status.FINISHED){
+              x.statusVI = StatusVI.FINISHED;
+            }
+            else if(x.status === Status.PATIENT_CANCEL){
+              x.statusVI = StatusVI.PATIENT_CANCEL;
+            }
+            else if(x.status === Status.WAITING){
+              x.statusVI = StatusVI.WAITING;
+            }
+          })
         }
       )
+  }
+
+  btnDetailBooking_click(id: any){
+    this.router.navigate(['/detail-booking/detail-booking', id]);
   }
 
   bnSearch_click(){

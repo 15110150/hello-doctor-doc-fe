@@ -30,6 +30,9 @@
               "src/manifest.json"
             ],
             "styles": [
+              {
+                "input": "src/theme/variables.scss"
+              },
               "src/styles.scss"
             ],
             "scripts": [],

@@ -3,17 +3,16 @@
     <ion-label color="white" ali="center">
       <div text-center>
         <strong>
-          Danh sách hôm nay
+          Lịch khám hôm nay
         </strong>
       </div>
     </ion-label>
   </ion-toolbar>
 </ion-header>
-<ion-button (click)="test()"></ion-button>
 <ion-content color="light">
   <div *ngIf="listToday">
     <ion-card *ngFor="let result of listToday">
-      <ion-item lines="none">
+      <ion-item lines="none" (click)="btnDetailBooking_click(result.id)">
         <ion-avatar slot="start">
           <img src="{{result.patient.avatarImg}}">
         </ion-avatar>

@@ -1,0 +1,59 @@
+ion-toolbar{
+    --background: #09548E; 
+}
+ion-item.itemTool{
+    --background: #09548E;
+}
+ion-label.center { 
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+ion-content{
+    --background: #f4f5f8;
+}
+ion-icon.star{
+    width: 35px;
+    height: 35px;
+}
+ion-icon.select{
+    color: #ffce00;
+    }
+ion-icon.unselect{
+    color: white;
+}
+ion-input.text-right{
+    text-align: right;
+}
+ion-input.text-right-code{
+    text-align: right;
+    color: white;
+}
+ion-item.itemCode{
+    --background:#86888f
+}
+ion-item.endStatus{
+    --background: transparent;
+    text-align: center;
+}
+ion-button.btn1{
+    --background:	#09548E;
+    --color: white;
+    width: 78px;
+    height: 28px;
+}
+ion-icon.iconSub{
+    display: inline-block;
+    vertical-align: middle;
+    width: 35px;
+    height: 35px;
+}
+ion-label.lbStatus{
+    display: inline-block;
+    vertical-align: middle;
+}
+ion-button.btnFeedback{
+    --background:	#09548E;
+    --color: white;
+}

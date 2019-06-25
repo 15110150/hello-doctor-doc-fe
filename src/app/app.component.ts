@@ -7,14 +7,5 @@ import { FcmService } from './services/fcm/fcm.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  message;
-
-  constructor(private fcm: FcmService) {
-    this.initializeApp();
-  }
-
-  initializeApp() {
-    console.log("hh");
-    this.fcm.getPermission().subscribe();
-  }
+  title = "Hello Doctor"
 }

@@ -28,18 +28,18 @@
     <ion-card>
       <ion-item lines="none">
         <ion-label position="stacked"><strong>Giá cũ</strong></ion-label>
-        <ion-input readonly=true>100 VND</ion-input>
+        <ion-input readonly=true>{{doctor.basePrice | number}} VND</ion-input>
       </ion-item>
       <ion-item lines="none">
         <ion-label position="stacked"><strong>Giá mới</strong></ion-label>
-        <ion-input color="danger" type="number"></ion-input>
+        <ion-input color="danger" type="number" [(ngModel)]="newPrice"></ion-input>
       </ion-item>
     </ion-card>
     <ion-grid>
       <ion-row>
         <ion-col size="4"></ion-col>
         <ion-col size="4">
-          <ion-button expand="full" shape="round" class="btnSubmit">
+          <ion-button expand="full" shape="round" class="btnSubmit" (click)="btnSubmit_click()">
             Xác nhận
           </ion-button>
         </ion-col>

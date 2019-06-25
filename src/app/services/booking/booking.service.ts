@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ListBooking } from 'src/app/model/list-booking';
 import { Booking } from 'src/app/model/booking';
+import { Feedback } from 'src/app/model/feedback';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class BookingService {
       }));
   }
 
-  updateBooking(booking: any): Observable<Booking> {
+  updateBooking(booking: Booking): Observable<Booking> {
     let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
     let url = this.urlBooking + '/book';
     const headers = new HttpHeaders()
@@ -41,6 +42,35 @@ export class BookingService {
     return this.http.post<Booking>(url, JSON.stringify(booking), {
       headers: headers
     })
+      .pipe(
+        map(response => {
+          const data = response;
+          console.log(data);
+          return data;
+        }));
+  }
+
+  getDetailBooking(id: any): Observable<ListBooking> {
+    let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
+    let header = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + accessToken.token);
+    let url = this.urlBooking;
+    url = url + '/book/detail/' + id;
+    return this.http.get<ListBooking>(url, {
+      headers: header
+    }).pipe(
+      map(response => {
+        const data = response;
+        return data;
+      }));
+  }
+
+  getDetailFeedback(id: any): Observable<Feedback> {
+    let accessToken = JSON.parse(localStorage.getItem('currentDoctor'));
+    let url = this.urlBooking + "/comment/detail/" + id;
+    const headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + accessToken.token);
+    return this.http.get<Feedback>(url, { headers: headers })
       .pipe(
         map(response => {
           const data = response;
