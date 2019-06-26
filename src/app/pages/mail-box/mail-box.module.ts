@@ -8,7 +8,8 @@ import { MailBoxComponent } from './mail-box.component';
 const routes: Routes = [
   {
     path: '',
-    component: MailBoxComponent
+    component: MailBoxComponent,
+    runGuardsAndResolvers: 'always',
   }
 ];
 
