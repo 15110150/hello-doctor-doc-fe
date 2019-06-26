@@ -8,6 +8,7 @@ import { FcmService } from 'src/app/services/fcm/fcm.service';
 import { MapingModelService } from 'src/app/services/maping-model/maping-model.service';
 import { Booking } from 'src/app/model/booking';
 import { AlertController } from '@ionic/angular';
+import { IdbService } from 'src/app/services/idb/idb.service';
 
 @Component({
   selector: 'app-list-today',
@@ -25,7 +26,7 @@ export class ListTodayComponent implements OnInit, OnDestroy {
 
   constructor(private bookingService: BookingService, private datePipe: DatePipe,
     private router: Router, private fcm: FcmService, private mapping: MapingModelService,
-    private alertController: AlertController) {
+    private alertController: AlertController, private indexDBService: IdbService) {
     //subscribe to the router events
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -37,7 +38,14 @@ export class ListTodayComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.strToday = this.datePipe.transform(this.today, 'dd/MM/yyyy');
-    this.getListToday();
+    if (!navigator.onLine) {
+      console.log(navigator.onLine);
+      //     this.listToday = this.indexDBService.getListBooking();
+    }
+    else {
+      console.log(navigator.onLine);
+      this.getListToday();
+    }
   }
 
   ngOnDestroy() {
@@ -56,9 +64,22 @@ export class ListTodayComponent implements OnInit, OnDestroy {
         this.listToday = result.filter(
           item => item.dateTime.includes(this.strToday)
         )
-      })
-    this.isShow = false;
-
+        if (this.indexDBService.getListBooking() === null) {
+          this.indexDBService.connecttoDBListBooking(this.listToday);
+        }
+        this.isShow = false;
+      },
+        error => {
+          console.log("ofine");
+          this.indexDBService.getListBooking()
+            .subscribe(result => {
+              this.isShow = false;
+              this.listToday = result;
+              console.log("vô rồi");
+              console.log(result);
+            });
+        },
+      )
   }
 
   btnDone_click(booking: any) {
@@ -67,33 +88,33 @@ export class ListTodayComponent implements OnInit, OnDestroy {
     this.mapping.mapingBooking(bookingDTO, booking)
     this.bookingService.updateBooking(bookingDTO)
       .subscribe(result => {
-        if(result!=null){
-        this.getListToday();
+        if (result != null) {
+          this.getListToday();
         }
-      }, 
-      error=>{
-        this.errorBookingAlert();
-      })
+      },
+        error => {
+          this.errorBookingAlert();
+        })
   }
 
-  btnDetailBooking_click(id: any){
+  btnDetailBooking_click(id: any) {
     this.router.navigate(['/detail-booking/detail-booking', id]);
   }
 
-  btnPatientCancel_click(booking: any){
+  btnPatientCancel_click(booking: any) {
     booking.status = Status.PATIENT_CANCEL;
     booking.statusReason = "Khách không đến khám";
     var bookingDTO = new Booking();
     this.mapping.mapingBooking(bookingDTO, booking)
     this.bookingService.updateBooking(bookingDTO)
       .subscribe(result => {
-        if(result!=null){
-        this.getListToday();
+        if (result != null) {
+          this.getListToday();
         }
-      }, 
-      error=>{
-        this.errorBookingAlert();
-      })
+      },
+        error => {
+          this.errorBookingAlert();
+        })
   }
 
   async errorBookingAlert() {
