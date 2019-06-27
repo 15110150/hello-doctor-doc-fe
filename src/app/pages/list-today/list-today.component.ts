@@ -30,6 +30,7 @@ export class ListTodayComponent implements OnInit, OnDestroy {
     //subscribe to the router events
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
+        console.log("â")
         //Nếu đó là một sự kiện NavigationEnd refesh lại hàm (hoặc ngOnInit)
         this.ngOnInit();
       }
@@ -40,7 +41,7 @@ export class ListTodayComponent implements OnInit, OnDestroy {
     this.strToday = this.datePipe.transform(this.today, 'dd/MM/yyyy');
     if (!navigator.onLine) {
       console.log(navigator.onLine);
-      //     this.listToday = this.indexDBService.getListBooking();
+      this.getListToday();
     }
     else {
       console.log(navigator.onLine);
@@ -60,26 +61,30 @@ export class ListTodayComponent implements OnInit, OnDestroy {
   getListToday() {
     this.bookingService.getListBookingToday(Status.ACCEPTED)
       .subscribe(result => {
-        console.log(this.listToday);
-        this.listToday = result.filter(
-          item => item.dateTime.includes(this.strToday)
-        )
-        if (this.indexDBService.getListBooking() === null) {
-          this.indexDBService.connecttoDBListBooking(this.listToday);
-        }
-        this.isShow = false;
-      },
+          console.log(this.listToday);
+          this.listToday = result.filter(
+            item => item.dateTime.includes(this.strToday)
+          );
+          this.indexDBService.getListBooking().subscribe(data => {
+            console.log(data);
+            if (data === undefined || data.length <= 0) {
+              console.log('Data not found');
+              this.indexDBService.connecttoDBListBooking(this.listToday);
+            }
+          });
+          this.isShow = false;
+        },
         error => {
-          console.log("ofine");
+          console.log('offine');
           this.indexDBService.getListBooking()
             .subscribe(result => {
               this.isShow = false;
               this.listToday = result;
-              console.log("vô rồi");
+              console.log('vô rồi');
               console.log(result);
             });
         },
-      )
+      );
   }
 
   btnDone_click(booking: any) {
