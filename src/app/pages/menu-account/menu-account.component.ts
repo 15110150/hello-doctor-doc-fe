@@ -4,6 +4,7 @@ import { AccountService } from 'src/app/services/account/account.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { FcmService } from 'src/app/services/fcm/fcm.service';
+import { IdbService } from 'src/app/services/idb/idb.service';
 
 @Component({
   selector: 'app-menu-account',
@@ -14,7 +15,7 @@ export class MenuAccountComponent implements OnInit {
 
   public userProfile: Doctor;
   constructor(private accountService: AccountService, private authService: AuthService,
-    private router: Router, private fcmService: FcmService) { }
+    private router: Router, private fcmService: FcmService, private indexDBService: IdbService) { }
 
   ngOnInit() {
     this.userProfile = new Doctor();
@@ -29,9 +30,16 @@ export class MenuAccountComponent implements OnInit {
     });
   }
 
-  btnLogout_click(){
-    this.fcmService.logout();
-    this.router.navigateByUrl('/login');
+  btnLogout_click() {
+    this.fcmService.logout().then(result => {
+      console.log(result);
+      this.indexDBService.deleteDatabase()
+      .subscribe(result => {
+        console.log(result);
+        this.router.navigateByUrl('/login');
+      });
+    }
+    )
   }
 
 }

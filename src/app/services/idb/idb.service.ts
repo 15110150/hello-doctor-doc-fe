@@ -52,4 +52,18 @@ export class IdbService {
     const p = this.db.openDatabase(1);
     return from(p.then(() => this.db.getAll('list-booking')));
   }
+
+  deleteDatabase(): Observable<any> {
+    return from(
+      this.db.deleteDatabase().then(
+        () => {
+          console.log("delete")
+        },
+        error => {
+          console.log(error);
+        }
+    )
+    )
+  }
+  
 }

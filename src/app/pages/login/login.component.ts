@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Account } from 'src/app/model/account';
 import { FcmService } from 'src/app/services/fcm/fcm.service';
 import { AlertController } from '@ionic/angular';
+import { IdbService } from 'src/app/services/idb/idb.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
   account: Account;
 
   constructor(private router: Router, private authService: AuthService,
-    private fcmService: FcmService, public alertController: AlertController) {
+    private fcmService: FcmService, public alertController: AlertController, private indexDBService: IdbService) {
 
   }
 
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.account)
       .subscribe(data => {
         if (data != null) {
+          this.indexDBService = new IdbService();
           this.router.navigateByUrl('/main/today');
           this.fcmService.getPermission().subscribe(
             next => this.fcmService.request_permission_for_notifications()

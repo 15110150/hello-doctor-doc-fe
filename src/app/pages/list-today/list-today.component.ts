@@ -61,7 +61,6 @@ export class ListTodayComponent implements OnInit, OnDestroy {
   getListToday() {
     this.bookingService.getListBookingToday(Status.ACCEPTED)
       .subscribe(result => {
-          console.log(this.listToday);
           this.listToday = result.filter(
             item => item.dateTime.includes(this.strToday)
           );

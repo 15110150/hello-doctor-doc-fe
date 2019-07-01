@@ -28,7 +28,8 @@ export class PatientService {
         map(response => {
           const data = response;
           return data;
-        }));
+        }
+        ));
   }
 
 }

@@ -31,7 +31,6 @@ export function tokenGetter() {
   return localStorage.getItem('currentUser');
 }
 
-
 @NgModule({
   declarations: [
     AppComponent,
