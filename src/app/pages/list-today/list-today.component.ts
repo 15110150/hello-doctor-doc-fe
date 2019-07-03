@@ -24,6 +24,13 @@ export class ListTodayComponent implements OnInit, OnDestroy {
   public isShow = true;
   navigationSubscription;
 
+  //check internet
+  isOnline;
+  //event refresh 
+  refesh;
+  //show mess ofline
+  isShowMes;
+
   constructor(private bookingService: BookingService, private datePipe: DatePipe,
     private router: Router, private fcm: FcmService, private mapping: MapingModelService,
     private alertController: AlertController, private indexDBService: IdbService) {
@@ -58,22 +65,40 @@ export class ListTodayComponent implements OnInit, OnDestroy {
     }
   }
 
+  doRefresh(event) {
+    this.refesh = event;
+    this.getListToday();
+  }
+
   getListToday() {
     this.bookingService.getListBookingToday(Status.ACCEPTED)
       .subscribe(result => {
-          this.listToday = result.filter(
-            item => item.dateTime.includes(this.strToday)
-          );
-          this.indexDBService.getListBooking().subscribe(data => {
-            console.log(data);
-            if (data === undefined || data.length <= 0) {
-              console.log('Data not found');
-              this.indexDBService.connecttoDBListBooking(this.listToday);
-            }
-          });
-          this.isShow = false;
-        },
+        if (this.refesh != undefined) {
+          this.refesh.target.complete();
+        }
+        this.isOnline = true;
+        this.listToday = result.filter(
+          item => item.dateTime.includes(this.strToday)
+        );
+        this.indexDBService.getListBooking().subscribe(data => {
+          console.log(data);
+          if (data === undefined || data.length <= 0) {
+            console.log('Data not found');
+            this.indexDBService.connecttoDBListBooking(this.listToday);
+          }
+        });
+        this.isShow = false;
+      },
         error => {
+          if (this.refesh != undefined) {
+            this.refesh.target.complete();
+          }
+          if(this.isShowMes === true){
+            this.mesageAlert();
+          }
+          //sau đó không show nữa
+          this.isShowMes = false;
+          this.isOnline = false;
           console.log('offine');
           this.indexDBService.getListBooking()
             .subscribe(result => {
@@ -127,6 +152,16 @@ export class ListTodayComponent implements OnInit, OnDestroy {
       message: 'Cập nhật trạng thái lịch khám thất bại, vui lòng liên hệ ban quản trị viên. Xin cảm ơn!',
       buttons: ['OK']
     });
+    await alert.present();
+  }
+
+  async mesageAlert() {
+    const alert = await this.alertController.create({
+      header: 'Thông báo',
+      message: 'Có vẻ như bạn đang offline, vui lòng kết nối internet để cập nhật thông tin mới nhất. Trong trường hợp bạn không thể online ngay lúc này, chúng tôi sẽ lấy thông tin lịch khám hôm nay từ lần mới nhất bạn xem thông tin.',
+      buttons: ['OK']
+    });
+
     await alert.present();
   }
 

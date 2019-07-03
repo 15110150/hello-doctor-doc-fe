@@ -36,9 +36,7 @@ export class LoginComponent implements OnInit {
         if (data != null) {
           this.indexDBService = new IdbService();
           this.router.navigateByUrl('/main/today');
-          this.fcmService.getPermission().subscribe(
-            next => this.fcmService.request_permission_for_notifications()
-          );
+          this.fcmService.request_permission_for_notifications()
         }
       },
         error => {

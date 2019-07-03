@@ -54,16 +54,9 @@ export class IdbService {
   }
 
   deleteDatabase(): Observable<any> {
-    return from(
-      this.db.deleteDatabase().then(
-        () => {
-          console.log("delete")
-        },
-        error => {
-          console.log(error);
-        }
-    )
-    )
+    return from(this.db.openDatabase(1).then(()=>{
+      this.db.clear("list-booking")
+    }))
   }
   
 }

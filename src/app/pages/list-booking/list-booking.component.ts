@@ -5,6 +5,7 @@ import { BookingService } from 'src/app/services/booking/booking.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { StatusVI } from 'src/app/model/statusVI';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-list-booking',
@@ -55,7 +56,8 @@ export class ListBookingComponent implements OnInit, OnDestroy {
   yearValue: Array<number>;
   //#endregion
 
-  constructor(private bookingService: BookingService, private router: Router, private datePipe: DatePipe) {
+  constructor(private bookingService: BookingService, private router: Router, 
+    private datePipe: DatePipe, private alertController: AlertController) {
     //subscribe to the router events
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd && this.status != null) {
@@ -231,12 +233,12 @@ export class ListBookingComponent implements OnInit, OnDestroy {
 
   getListBooking(startDate: any, endDate: any, status: any) {
     var _startDate = new Date(startDate);
-    var tempStartDate = this.datePipe.transform(_startDate, 'dd/MM/yyyy hh:mm:ss');
+    var tempStartDate = this.datePipe.transform(_startDate, 'dd/MM/yyyy');
 
     var _endDate = new Date(endDate);
-    var tempEndDate = this.datePipe.transform(_endDate, 'dd/MM/yyyy hh:mm:ss');
+    var tempEndDate = this.datePipe.transform(_endDate, 'dd/MM/yyyy');
 
-    this.bookingService.getListBookingAtPeriod(tempStartDate, tempEndDate, status)
+    this.bookingService.getListBookingAtPeriod(tempStartDate + ' 00:00:00', tempEndDate + ' 00:00:00', status)
       .subscribe(
         result => {
           this.listBoooking = result;
@@ -264,6 +266,10 @@ export class ListBookingComponent implements OnInit, OnDestroy {
               x.statusVI = StatusVI.WAITING;
             }
           })
+        },
+        error=>{
+          this.isShow = false;
+          //this.errorAlert();
         }
       )
   }
@@ -274,6 +280,15 @@ export class ListBookingComponent implements OnInit, OnDestroy {
 
   bnSearch_click(){
     this.getListBooking(this.startDate, this.endDate, this.status);
+  }
+
+  async errorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Lỗi',
+      message: 'Vui lòng kiểm tra lại internet. Nếu đã kết nối mà vẫn lỗi, vui lòng liên hệ ban quản trị viên. Xin cảm ơn!',
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
 }

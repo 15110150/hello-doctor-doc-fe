@@ -96,12 +96,11 @@ export class FcmService {
     const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + accessToken.token);
     return this.http.post(urlUnSub, token, {
-      headers: headers
+      headers: headers,
+      responseType: "text"
     }).pipe(
       map(response => {
         const data = response;
-        localStorage.removeItem('currentDevice');
-        localStorage.removeItem('currentDoctor');
         return data;
       })).toPromise();
   }

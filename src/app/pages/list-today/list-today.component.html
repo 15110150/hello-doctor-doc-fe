@@ -10,6 +10,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-content color="light">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="listToday">
     <ion-card *ngFor="let result of listToday">
       <ion-item lines="none" (click)="btnDetailBooking_click(result.id)">
@@ -21,7 +24,7 @@
           <p>{{result.dateTime}}</p>
         </ion-label>
       </ion-item>
-      <ion-card-content>
+      <ion-card-content *ngIf="isOnline">
         <ion-button size="small" class="btnOK" slot="end" (click)="btnDone_click(result)">
           Đã khám
         </ion-button>
@@ -47,7 +50,7 @@
         </ion-label>
       </ion-item>
       <ion-card-content>
-          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
       </ion-card-content>
     </ion-card>
   </div>

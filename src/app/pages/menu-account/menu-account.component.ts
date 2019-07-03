@@ -22,24 +22,38 @@ export class MenuAccountComponent implements OnInit {
     this.getProfile();
   }
 
-  getProfile(){
+  getProfile() {
     this.accountService.getAccount()
-    .subscribe(result => {
-      this.userProfile = result;
-      console.log(this.userProfile);
-    });
+      .subscribe(result => {
+        this.userProfile = result;
+        console.log(this.userProfile);
+      });
   }
 
   btnLogout_click() {
-    this.fcmService.logout().then(result => {
-      console.log(result);
+    let token = localStorage.getItem('currentDevice');
+    if (token === null) {
       this.indexDBService.deleteDatabase()
-      .subscribe(result => {
-        console.log(result);
-        this.router.navigateByUrl('/login');
-      });
+        .subscribe(result => {
+          console.log(result);
+          localStorage.removeItem('currentDevice');
+          localStorage.removeItem('currentDoctor');
+          this.router.navigateByUrl('/login').then(() => window.location.reload());
+        })
     }
-    )
+    else {
+      this.fcmService.logout().then(result => {
+        console.log(result);
+        this.indexDBService.deleteDatabase()
+          .subscribe(result => {
+            console.log(result);
+            localStorage.removeItem('currentDevice');
+            localStorage.removeItem('currentDoctor');
+            this.router.navigateByUrl('/login').then(() => window.location.reload());
+          });
+      }
+      )
+    }
   }
 
 }

@@ -28,8 +28,8 @@ export class ListWaitingComponent implements OnInit {
   getListWaiting() {
     this.bookingService.getListBookingToday(Status.WAITING)
       .subscribe(result => {
+        this.isShow = false;
         this.listWaiting = result;
-
         this.listWaiting.forEach(x => {
           this.bookingService.getListBookingAtTime(x.dateTime + ":00")
             .subscribe(result2 => {
@@ -42,6 +42,10 @@ export class ListWaitingComponent implements OnInit {
           x.dateFormat = this.getDay(x.dateTime);
           x.statusVI = StatusVI.FINISHED;
         });
+      },
+      error=>{
+        this.isShow = false;
+        //this.errorAlert();
       })
   }
 
@@ -195,5 +199,13 @@ export class ListWaitingComponent implements OnInit {
     await alert.present();
   }
 
+  async errorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Lỗi',
+      message: 'Vui lòng kiểm tra lại internet. Nếu đã kết nối mà vẫn lỗi, vui lòng liên hệ ban quản trị viên. Xin cảm ơn!',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
 }

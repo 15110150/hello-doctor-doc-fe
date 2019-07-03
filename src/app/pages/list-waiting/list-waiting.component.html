@@ -24,7 +24,6 @@
       </ion-item>
       <ion-card-content>
         <ion-label>Bạn có <strong>{{result.numberBooking}}</strong> lịch hẹn vào thời gian này. </ion-label>
-        <ion-label *ngIf="(result.numberBooking > 0)" class="btnDetail">Chi tiết</ion-label>
         <br />
         <ion-button size="small" class="btnOK" slot="end" (click)="btnOK_click(result)">
           Xác nhận
